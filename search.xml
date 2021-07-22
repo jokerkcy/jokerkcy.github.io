@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>刷题笔记</title>
+      <link href="/2021/07/21/the-first-blog/"/>
+      <url>/2021/07/21/the-first-blog/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Leetcode热门前100题"><a href="#Leetcode热门前100题" class="headerlink" title="Leetcode热门前100题"></a>Leetcode热门前100题</h1><span id="more"></span> <h2 id="Leetcode-10-正则表达式匹配"><a href="#Leetcode-10-正则表达式匹配" class="headerlink" title="Leetcode.10.正则表达式匹配"></a>Leetcode.10.正则表达式匹配</h2><p><img src="https://img-blog.csdnimg.cn/20210720171650777.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDAzNTI3MQ==,size_16,color_FFFFFF,t_70" alt="题目内容"></p><p>主要方法：动态规划</p><p>注意点1：当两个字符串都为0的时候也是可以匹配的，所以设置dp[0][0]为true。</p><p>字符串匹配主要分配三种情况：当前位置的字母相同，p当前位置字符为‘.’，以及p当前位置的字符为’*’。<br>前两种情况比较简单，可以直接用一个函数提取出来，简化代码</p><p>第三种情况就比较复杂，比较难以理解</p><p>状态转移的时候不要跳跃的去思考到还没有转移到遇到’<em>‘的情况，只看当前的位置。所以当前位置不是’</em>‘的时候只用考虑前两种匹配方式</p><p>当前位置是’*’的时候又分为两种情况：</p><p>一种是*前的字符与s中的字符不匹配：那么状态转移方程直接为dp[i][j]=dp[i][j-2]，这是比较好理解的</p><p>另一种是*前的字符与s中的字符匹配（这里的匹配包括’.’的匹配）：</p><p>1）p与s可以匹配1次：dp[i][j]=dp[i-1][j]，其中包含了可以匹配多次的意思，dp[i-1][j]也是当前位置为*的判断</p><p>2）p与s可以匹配0次：dp[i][j]=dp[i][j-2]，qbb与qbbb<em>前面b</em>前已经可以匹配了，所以需要匹配0次</p><p>从而就可以写出代码了</p><pre><code>class Solution &#123;    public boolean isMatch(String s, String p) &#123;        int m=s.length(),n=p.length();        boolean[][] dp = new boolean[m+1][n+1];        dp[0][0]=true;        for(int i=0;i&lt;=m;i++)&#123;            for(int j=1;j&lt;=n;j++)&#123;                if(p.charAt(j-1)!=&#39;*&#39;)&#123;                    dp[i][j]=match(s,p,i,j)&amp;&amp;dp[i-1][j-1];                &#125;else&#123;                    if(match(s,p,i,j-1))&#123;                        dp[i][j]=dp[i-1][j]||dp[i][j-2];                    &#125;else&#123;                        dp[i][j]=dp[i][j-2];                    &#125;                &#125;            &#125;        &#125;        return dp[m][n];    &#125;    public boolean match(String s,String p,int i,int j)&#123;        if(i&lt;=0)return false;        if(p.charAt(j-1)==&#39;.&#39;)return true;        return s.charAt(i-1)==p.charAt(j-1);    &#125;&#125;</code></pre><p>​</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Java </category>
+          
+          <category> 算法 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> 算法 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+  
+  
+</search>
